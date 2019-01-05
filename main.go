@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"gitlab.com/countableset/lambda-s3-cloudflare/cloudflare"
+	"gitlab.com/countableset/lambda-s3-cloudflare/util"
 
 	"gitlab.com/countableset/lambda-s3-cloudflare/awss3"
 
@@ -22,6 +23,11 @@ func main() {
 	svc := s3.New(sess)
 	bucket := "logs.countableset.com"
 	policy := awss3.GetPolicy(svc, bucket)
-	fmt.Println(policy)
-	fmt.Println("Hello, world.")
+	s3IPAddresses := awss3.GetSortedIPAddresses(policy.(map[string]interface{}))
+	cloudflareIPAddresses := cloudflare.GetAllSortedIPAddresses()
+	result := util.TestEqualSlices(s3IPAddresses, cloudflareIPAddresses)
+	if result != nil {
+		policy = awss3.MergeIPSliceIntoPolicy(policy.(map[string]interface{}), result)
+		awss3.UpdatePolicy(svc, bucket, policy)
+	}
 }
