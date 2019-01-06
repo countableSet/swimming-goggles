@@ -3,10 +3,9 @@ package main
 import (
 	"log"
 
+	"gitlab.com/countableset/lambda-s3-cloudflare/awss3"
 	"gitlab.com/countableset/lambda-s3-cloudflare/cloudflare"
 	"gitlab.com/countableset/lambda-s3-cloudflare/util"
-
-	"gitlab.com/countableset/lambda-s3-cloudflare/awss3"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
@@ -14,22 +13,28 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
-const bucket string = "logs.countableset.com"
+// Event struct to parse event json from lambda
+type Event struct {
+	Buckets []string `json:"buckets"`
+}
 
 var svc = s3.New(session.New(), aws.NewConfig().WithRegion("us-west-2"))
 
-func lambdaHandler() (string, error) {
-	policy := awss3.GetPolicy(svc, bucket)
-	s3IPAddresses := awss3.GetSortedIPAddresses(policy.(map[string]interface{}))
+func lambdaHandler(event Event) (string, error) {
 	cloudflareIPAddresses := cloudflare.GetAllSortedIPAddresses()
-	result := util.TestEqualSlices(s3IPAddresses, cloudflareIPAddresses)
-	if result != nil {
-		log.Println("Updating policy...")
-		policy = awss3.MergeIPSliceIntoPolicy(policy.(map[string]interface{}), result)
-		awss3.UpdatePolicy(svc, bucket, policy)
-		log.Printf("Policy updated to %v\n", policy)
-	} else {
-		log.Println("Policy already up-to-date, no changes needed!")
+	for _, bucket := range event.Buckets {
+		log.Printf("Running check on bucket %s\n", bucket)
+		policy := awss3.GetPolicy(svc, bucket)
+		s3IPAddresses := awss3.GetSortedIPAddresses(policy.(map[string]interface{}))
+		result := util.TestEqualSlices(s3IPAddresses, cloudflareIPAddresses)
+		if result != nil {
+			log.Printf("Updating policy for bucket %s...\n", bucket)
+			policy = awss3.MergeIPSliceIntoPolicy(policy.(map[string]interface{}), result)
+			awss3.UpdatePolicy(svc, bucket, policy)
+			log.Printf("Policy updated for bucket %s to %v\n", bucket, policy)
+		} else {
+			log.Printf("Policy already up-to-date, no changes needed for bucket %s\n", bucket)
+		}
 	}
 	return "Success", nil
 }

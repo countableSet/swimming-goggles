@@ -14,7 +14,7 @@ test:
 	go test ./...
 
 serverless: default
-	sam local invoke "${BUILD_OUTPUT}" --no-event --profile logtest --region ${REGION}
+	sam local invoke "${BUILD_OUTPUT}" --event event.json --profile logtest --region ${REGION}
 
 debug: default
 	dlv debug . --listen=:2345 --headless --log --api-version=2 -- server
