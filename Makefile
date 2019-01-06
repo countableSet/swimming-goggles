@@ -1,7 +1,9 @@
 PROJECT_NAME=lambda-s3-cloudflare
 
-default:
-	go build
+default: fmt test build
+
+build:
+	GOOS=linux go build -o app
 
 fmt:
 	go fmt
@@ -9,8 +11,11 @@ fmt:
 test:
 	go test ./...
 
+serverless: default
+	sam local invoke "app" --no-event --profile logtest --region us-west-2
+
 debug: default
-	dlv debug . --listen=0.0.0.0:2345 --headless --log --api-version=2 -- server
+	dlv debug . --listen=:2345 --headless --log --api-version=2 -- server
 
 clean:
-	rm ${PROJECT_NAME}
+	rm app
