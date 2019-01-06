@@ -15,6 +15,7 @@ build_job:
   image: golang:1.11-stretch
   stage: build
   script:
+  - make build
   - make
   artifacts:
     paths:
