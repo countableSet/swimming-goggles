@@ -18,8 +18,12 @@ serverless: default
 debug: default
 	dlv debug . --listen=:2345 --headless --log --api-version=2 -- server
 
-zip: default
+zip:
+ifeq ($(wildcard ./$(BUILD_OUTPUT)),)
+	$(error Build output file not found, please run make again.)
+else
 	zip handler.zip ./${BUILD_OUTPUT}
+endif
 
 create: zip
 	aws lambda create-function \
