@@ -33,15 +33,13 @@ create: zip
 		--role ${AWS_LAMBDA_S3_BUCKET_POLICY_ROLE_ARN} \
 		--runtime go1.x \
 		--zip-file fileb://./handler.zip \
-		--handler ${BUILD_OUTPUT} \
-		--profile lambda-devops
+		--handler ${BUILD_OUTPUT}
 
 deploy: zip
 	aws lambda update-function-code \
 		--function-name ${PROJECT_NAME} \
 		--zip-file fileb://./handler.zip \
-		--publish \
-		--profile lambda-devops
+		--publish
 
 clean:
 	rm ${BUILD_OUTPUT}
