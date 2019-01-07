@@ -16,7 +16,7 @@ deploy_job:
   stage: deploy
   before_script:
     - pip install awscli --upgrade
-    - apt install update && apt install -y zip
+    - apt-get update && apt-get install -y zip
   script:
     - make deploy
   dependencies:
