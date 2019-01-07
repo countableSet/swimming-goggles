@@ -7,7 +7,6 @@ AWS Lambda to update S3 bucket policy IP addresses to cloudflare.
 Create a schedule trigger with the following 'cron(0 17 ? * 1 *)' which runs everything week on Sunday at 17:00 GMT.
 Input should look something like `{"buckets":["logs.countableset.com"]}` for the event json.
 
-
 #### IAM Policies
 
 Role policy for lambda:
@@ -53,4 +52,11 @@ User policy for lambda access:
         }
     ]
 }
+```
+
+#### Environment Variables
+
+```
+export AWS_REGION="us-west-2"
+export AWS_LAMBDA_S3_BUCKET_POLICY_ROLE_ARN="arn:aws:iam::XXYYZZ:role/lambda-s3-bucket-policy"
 ```

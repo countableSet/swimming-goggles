@@ -1,6 +1,5 @@
 PROJECT_NAME=lambda-s3-cloudflare
 BUILD_OUTPUT=app
-REGION=us-west-2
 
 default: fmt test build
 
@@ -14,7 +13,7 @@ test:
 	go test ./...
 
 serverless: default
-	sam local invoke "${BUILD_OUTPUT}" --event event.json --profile logtest --region ${REGION}
+	sam local invoke "${BUILD_OUTPUT}" --event event.json --profile logtest --region ${AWS_REGION}
 
 debug: default
 	dlv debug . --listen=:2345 --headless --log --api-version=2 -- server
@@ -24,10 +23,10 @@ zip: default
 
 create: zip
 	aws lambda create-function \
-		--region ${REGION} \
+		--region ${AWS_REGION} \
 		--function-name ${PROJECT_NAME} \
 		--memory 128 \
-		--role arn:aws:iam::515609462839:role/lambda-s3-bucket-policy \
+		--role ${AWS_LAMBDA_S3_BUCKET_POLICY_ROLE_ARN} \
 		--runtime go1.x \
 		--zip-file fileb://./handler.zip \
 		--handler ${BUILD_OUTPUT} \
@@ -37,6 +36,7 @@ deploy: zip
 	aws lambda update-function-code \
 		--function-name ${PROJECT_NAME} \
 		--zip-file fileb://./handler.zip \
+		--publish \
 		--profile lambda-devops
 
 clean:
