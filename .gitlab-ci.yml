@@ -1,11 +1,24 @@
 stages:
   - build
+  - deploy
 
 build_job:
   image: golang:1.11-stretch
   stage: build
   script:
-  - make
+    - make
   artifacts:
     paths:
       - app
+
+deploy_job:
+  image: python:3-alpine
+  stage: deploy
+  before_script:
+    - pip install awscli --upgrade
+  script:
+    - make deploy
+  dependencies:
+    - build_job
+  only:
+    - master
