@@ -12,7 +12,7 @@ build_job:
       - app
 
 deploy_job:
-  image: python:3-alpine
+  image: python:3-stretch
   stage: deploy
   before_script:
     - pip install awscli --upgrade
