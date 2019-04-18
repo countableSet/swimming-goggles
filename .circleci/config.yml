@@ -4,7 +4,6 @@ jobs:
   build:
     docker:
       - image: golang:1.12-stretch
-    working_directory: /go/src/github.com/countableset/swimming-goggles
     steps:
       - checkout
       - run: make
