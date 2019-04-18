@@ -10,6 +10,10 @@ jobs:
       - store_artifacts:
           path: app
           destination: app
+      - persist_to_workspace:
+          root: .
+          paths:
+            - app
 
   # deploy to aws
   deploy:
@@ -17,9 +21,11 @@ jobs:
       - image: python:3-stretch
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run: pip install awscli --upgrade
       - run: apt-get update && apt-get install -y zip
-      - run: make build deploy
+      - run: make deploy
 
 workflows:
   version: 2
