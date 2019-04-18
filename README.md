@@ -1,7 +1,6 @@
 # swimming-goggles 
-#### AWS lambda to update S3 bucket policy for Cloudflare IP Address
 
-AWS Lambda to update S3 bucket policy IP addresses to cloudflare.
+AWS lambda to update S3 bucket policy with Cloudflare IP addresses
 
 #### Cloudwatch schedule
 
