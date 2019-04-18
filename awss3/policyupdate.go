@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
 
-	"gitlab.com/countableset/lambda-s3-cloudflare/util"
+	"github.com/countableset/swimming-goggles/util"
 )
 
 // UpdatePolicy updates the policy of the bucket with the policy

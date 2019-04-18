@@ -3,7 +3,7 @@ package awss3
 import (
 	"sort"
 
-	"gitlab.com/countableset/lambda-s3-cloudflare/util"
+	"github.com/countableset/swimming-goggles/util"
 )
 
 // GetSortedIPAddresses returns the list of ip address sorts from the policy

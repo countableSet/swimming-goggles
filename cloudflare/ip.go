@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"gitlab.com/countableset/lambda-s3-cloudflare/util"
+	"github.com/countableset/swimming-goggles/util"
 )
 
 // https://www.cloudflare.com/ips/

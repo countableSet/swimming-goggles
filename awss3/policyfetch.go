@@ -3,7 +3,7 @@ package awss3
 import (
 	"encoding/json"
 
-	"gitlab.com/countableset/lambda-s3-cloudflare/util"
+	"github.com/countableset/swimming-goggles/util"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"

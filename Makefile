@@ -1,4 +1,4 @@
-PROJECT_NAME=lambda-s3-cloudflare
+PROJECT_NAME=swimming-goggles
 BUILD_OUTPUT=app
 
 default: fmt test build

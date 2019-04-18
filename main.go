@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"gitlab.com/countableset/lambda-s3-cloudflare/awss3"
-	"gitlab.com/countableset/lambda-s3-cloudflare/cloudflare"
-	"gitlab.com/countableset/lambda-s3-cloudflare/util"
+	"github.com/countableset/swimming-goggles/awss3"
+	"github.com/countableset/swimming-goggles/cloudflare"
+	"github.com/countableset/swimming-goggles/util"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
