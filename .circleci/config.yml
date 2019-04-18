@@ -1,0 +1,19 @@
+version: 2.1
+jobs:
+  # go project build
+  build:
+    docker:
+      - image: golang:1.11-stretch
+    working_directory: /go/src/github.com/countableset/document-imaging
+    steps:
+      - checkout
+      - run: make
+      - store_artifacts:
+          path: app
+          destination: app
+
+workflows:
+  version: 2
+  build-and-package:
+    jobs:
+      - build
